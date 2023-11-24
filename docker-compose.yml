@@ -6,6 +6,8 @@ networks:
 volumes:
     mysqldata:
         driver: local
+    redisdata:
+        driver: local
 
 services:
     #Laravel App
@@ -56,5 +58,17 @@ services:
             MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
         volumes:
             - mysqldata:/var/lib/mysql/
+        networks:
+            - app-network
+
+    # Redis
+    redis:
+        image: redis:alpine
+        container_name: redis
+        command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
+        ports:
+            - "${REDIS_PORT}:6379"
+        volumes:
+            - ./data/redis:/data
         networks:
             - app-network
