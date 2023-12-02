@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\ProductsNotif;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -24,7 +25,6 @@ class ProcessEmailNotification implements ShouldQueue
      */
     public function __construct($products)
     {
-        Redis::class;
         Log::info('ProcessEmailNotification Jobs');
         $this->products = $products;
     }
@@ -34,10 +34,14 @@ class ProcessEmailNotification implements ShouldQueue
      */
     public function handle(): void
     {
-        $notif = new ProductsNotif();
-        Mail::to('dlira@stratpoint.com')->queue($notif);
+        try {
+            $notif = new ProductsNotif();
+            Mail::to('dlira@stratpoint.com')->queue($notif);
 
-        Log::info($this->products);
-        Log::info('ProcessEmailNotification Jobs executed');
+            Log::info($this->products);
+            Log::info('ProcessEmailNotification Jobs executed');
+        } catch (Exception $e) {
+            Log::error($e);
+        }
     }
 }

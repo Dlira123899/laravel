@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuestDashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RabbitMQController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -56,5 +57,11 @@ Route::get('/token/create', function (Request $request) {
     $token = $request->user()->createToken("admin_token");
     return ['token' => $token->plainTextToken];
 })->middleware(['auth', 'role:admin']);
+
+
+
+
+// RabbitMQ
+Route::get('/publish', [RabbitMQController::class, 'publishMessage']);
 
 require __DIR__ . '/auth.php';

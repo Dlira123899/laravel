@@ -22,8 +22,6 @@ class ProductController extends Controller
     public function index()
     {
         try {
-            //Mail::to('dlira@stratpoint.com')->send(new ProductsNotif());
-
             $products = Product::all();
 
             Log::info($products);
@@ -77,8 +75,8 @@ class ProductController extends Controller
             /**
              * Push Email notification to Queue
              */
-            // Queue::push(new ProcessEmailNotification($product));
-            ProcessEmailNotification::dispatch($product);
+            Queue::push(new ProcessEmailNotification($product));
+            // ProcessEmailNotification::dispatch($product);
 
             Log::info('Successfully created a product');
             Log::info($request->input());
