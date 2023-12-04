@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\CacheController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuestDashboardController;
 use App\Http\Controllers\ProfileController;
@@ -63,5 +64,8 @@ Route::get('/token/create', function (Request $request) {
 
 // RabbitMQ
 Route::get('/publish', [RabbitMQController::class, 'publishMessage']);
+
+// Cache
+Route::get('/caching', [CacheController::class, 'index']);
 
 require __DIR__ . '/auth.php';
